@@ -37,9 +37,15 @@ fi
 # Default editor.
 export EDITOR=/usr/bin/vim
 
+# Per-user Python configuration.
+export PYTHONSTARTUP=~/.pythonrc
+
 # For thesis.
 export TEXINPUTS=".:${HOME}/Study/MIT/2011/Schwa_Lab_Git_Repos/tex//:"
 export DISTILBASE="${HOME}/dev/distil/code/"
+
+# For WordNet 2.0 (which I don't want to install in a standard location).
+export WNHOME=/usr/local/stow/WordNet-2.0
 
 # Default option settings for MPage.  (Worked out by trial-and-error.)
 # Note that one sheet margin point is 0.35mm
