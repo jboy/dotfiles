@@ -24,3 +24,5 @@ else:
   import rlcompleter
   # Use C-t to trigger shell autocomplete, leaving Tab to insert literal tabs.
   readline.parse_and_bind("C-t: complete")
+  # Remind myself that the mapping has been performed.
+  print >> sys.stderr, 'Enabled key mapping: C-t -> autocomplete'
