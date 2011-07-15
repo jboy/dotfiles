@@ -48,6 +48,8 @@
 " Set textwidth (":help textwidth") to 79 characters; lines will be broken
 " after this width.
 au BufEnter *.txt set tw=79
+" Unless I don't *want* to break lines...
+au BufEnter *.nobr set tw=0
 
 " In Normal (Command) Mode, enable the following mappings:
 " K to "break long line before edge of screen".
