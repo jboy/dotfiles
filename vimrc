@@ -50,10 +50,17 @@
 au BufEnter *.txt set tw=79
 
 " In Normal (Command) Mode, enable the following mappings:
-" K to "break long line before edge of screen".
-" ; to "move to next window".
+" 1. K to "break long line before edge of screen".
+" 2. ; as the first part of "move to next window".
+"
+" (Hence:
+" ;w to change to the next window in order;
+" ;h to move to the next window left;
+" ;j to move to the next window down;
+" ;n to open a new, unnamed window (equivalent to :'new');
+" etc.)
 :nmap K 82\|Bhr<Enter>
-:nmap ; <C-W>w
+:nnoremap ; <C-W>
 
 " /*
 "  * C-style comments.
@@ -160,3 +167,111 @@ au BufEnter *.css set ai tw=0 ts=4 sw=4
 set wildmode=longest,list,full
 set wildmenu
 
+" The following configurations added on 2011-08-09:
+
+" Replace the default 'w', 'b' and 'e' mappings
+" instead of defining additional mappings',w', ',b' and ',e'.
+"
+" This uses the amazing CamelCaseMotion plugin:
+"  http://www.vim.org/scripts/script.php?script_id=1905
+" These mappings are taken from the examples on that page.
+"
+" The CamelCaseMotion plugin enables the 'w', 'b' and 'e'
+" commands to recognise underscores and CamelCase boundaries,
+" without breaking ^N/^P completion (as is the unfortunate
+" result of the "set iskeyword-=_" approach)
+"  http://stackoverflow.com/questions/1279462/how-can-i-configure-vim-so-that-movement-commands-will-include-underscores-and-ca
+"
+" Note: Ensure there are no trailing space characters at the end
+" of these lines, or the mappings will be messed up.
+map <silent> w <Plug>CamelCaseMotion_w
+map <silent> b <Plug>CamelCaseMotion_b
+map <silent> e <Plug>CamelCaseMotion_e
+sunmap w
+sunmap b
+sunmap e
+
+" Replace default 'iw' text-object and define 'ib' and 'ie' motions.
+" Also from the examples on:
+"  http://www.vim.org/scripts/script.php?script_id=1905
+"
+" These motions may be used as visual mode operators:
+"  http://vimdoc.sourceforge.net/htmldoc/visual.html#visual-operators
+" eg, to visually-select the current word, use 'viw'.
+"
+" Note: Ensure there are no trailing space characters at the end
+" of these lines, or the mappings will be messed up.
+omap <silent> iw <Plug>CamelCaseMotion_iw
+xmap <silent> iw <Plug>CamelCaseMotion_iw
+omap <silent> ib <Plug>CamelCaseMotion_ib
+xmap <silent> ib <Plug>CamelCaseMotion_ib
+omap <silent> ie <Plug>CamelCaseMotion_ie
+xmap <silent> ie <Plug>CamelCaseMotion_ie
+
+" Now change the meanings of 'W', 'B' and 'E' (which by default
+" jump to the next/previous whitespace) with the default meanings
+" of 'w', 'b' and 'e' (ie, whole "words" as defined by 'iskeyword').
+"  http://vimdoc.sourceforge.net/htmldoc/motion.html#word
+"  http://vimdoc.sourceforge.net/htmldoc/options.html#'iskeyword'
+noremap W w
+noremap B b
+noremap E e
+
+" Do a similar thing to convert 'iW' to what 'iw' used to be.
+" (There are no 'ib' or 'ie' by default.)
+onoremap <silent> iW iw
+xnoremap <silent> iW iw
+
+" Some convenient Insert mode mappings:
+" Based upon examples at:
+"  http://stackoverflow.com/questions/3602007/vim-del-in-insert-mode
+"  http://stackoverflow.com/questions/1737163/vim-traversing-text-in-insert-mode
+"  http://vim.wikia.com/wiki/Mapping_keys_in_Vim_-_Tutorial_(Part_1)
+"
+" Note that 'imap' does what I want here; if I use 'inoremap',
+" I lose the CamelCaseMotion mappings defined above.
+"
+" Ctrl+o followed by a single command means "execute this command
+" then return immediately to Insert Mode".
+imap <C-F> <C-O>w
+imap <C-B> <C-O>b
+" Note that this clobbers the previous meaning of C-D:
+" decrease indentation in Insert Mode.
+" Hence, we will remap Ctrl+d to Ctrl+k.
+inoremap <C-K> <C-D>
+" For symmetry, let's also remap C-T (increase indentation
+" in Insert Mode) to C-J.  By default, C-J is just one of
+" the myriad ways to move down a line:
+"  http://vimdoc.sourceforge.net/htmldoc/motion.html#CTRL-P
+inoremap <C-J> <C-T>
+" Note:  To correspond with Readline, it would be more correct
+" to define this as 'imap <C-D> <C-O>de', but 'dw' is more convenient.
+imap <C-D> <C-O>dw
+imap <C-R> <C-O>db
+" Note that this clobbers the previous meaning of C-R:
+" insert the contents of a register:
+"  http://vimdoc.sourceforge.net/htmldoc/insert.html#i_CTRL-R
+" Hence, let's remap C-_ to C-R
+inoremap <C-_> <C-R>
+cnoremap <C-_> <C-R>
+
+" And some similar mappings for Command-line Mode:
+"  http://vimdoc.sourceforge.net/htmldoc/map.html#map-overview
+"  http://vimdoc.sourceforge.net/htmldoc/cmdline.html#Command-line
+"
+" Unfortunately, I can't seem to repeat the Insert Mode mappings
+" above, since Ctrl+o doesn't have the same convenient function of
+" "execute a single command then return immediately to Insert Mode".
+" Hence, I'll use Shift+Right and Shift-Left, which are equivalent
+" to the default meanings of 'W' and 'B'.  Not perfect, but better
+" than nothing:
+"  http://vimdoc.sourceforge.net/htmldoc/motion.html#<S-Right>
+cnoremap <C-F> <S-Right>
+cnoremap <C-B> <S-Left>
+
+" Mimic the Ctrl+A and Ctrl+E of Emacs in Insert Mode,
+" replacing the useless default functions of these shortcuts:
+"  http://vimdoc.sourceforge.net/htmldoc/insert.html#i_CTRL-A
+"  http://vimdoc.sourceforge.net/htmldoc/insert.html#i_CTRL-E
+imap <silent> <C-A> <C-O>^
+imap <silent> <C-E> <C-O>$
