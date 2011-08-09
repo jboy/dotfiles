@@ -21,7 +21,7 @@ import rlcompleter
 # This is a module in my PYTHONPATH.
 import custom_readline_bindings
 
-for binding in custom_readline_bindings.get_bindings():
+for binding in custom_readline_bindings.get_bindings().iteritems():
   readline.parse_and_bind("%s: %s" % binding)
 
 print >> sys.stderr, 'Enabled key mappings:'
