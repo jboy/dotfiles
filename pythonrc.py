@@ -21,6 +21,10 @@ import rlcompleter
 # This is a module in my PYTHONPATH.
 import custom_readline_bindings
 
-custom_readline_bindings.__bind_all(readline,
-  custom_readline_bindings.__bindings__, sys.stderr)
+for binding in custom_readline_bindings.get_bindings():
+  readline.parse_and_bind("%s: %s" % binding)
+
+print >> sys.stderr, 'Enabled key mappings:'
+for binding in custom_readline_bindings.get_readable_bindings():
+  print >> sys.stderr, '  % 8s  ->  %s' % binding
 

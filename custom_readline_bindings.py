@@ -1,17 +1,25 @@
 # ~/lib-py/custom_readline_bindings.py
 #
 #  Custom Readline bindings, to be imported by the Python startup file.
-#  Example usage:
 #
-#    import readline
-#    import custom_readline_bindings
-#    custom_readline_bindings.__bind_all(readline,
-#      custom_readline_bindings.__bindings__, sys.stderr)
+# Example usage:
+#
+#   import sys
+#   import readline
+#   import custom_readline_bindings
+#
+#   for binding in custom_readline_bindings.get_bindings():
+#     readline.parse_and_bind("%s: %s" % binding)
+#
+#   print >> sys.stderr, 'Enabled key mappings:'
+#   for binding in custom_readline_bindings.get_readable_bindings():
+#     print >> sys.stderr, '  % 8s  ->  %s' % binding
+
 
 import types
 
 
-__bindings__ = {
+__BINDINGS = {
   # Each dictionary key is a key-sequence.
   # The corresponding dictionary value is the target binding.
   # If the value is a pair, the zeroth element is the target binding;
@@ -92,7 +100,17 @@ __bindings__ = {
 }
 
 
-def __bind_all(readline_module, bindings, msg_stream=None):
+def get_bindings():
+  def __get_binding(b):
+    if type(b) == types.TupleType:
+      return b[0]
+    else:
+      return b
+
+  return [(k, __get_binding(b)) for k, b in __BINDINGS.iteritems()]
+
+
+def get_readable_bindings():
   def __get_readable_keyseq(k):
     k = k.replace('"', '')
 
@@ -112,20 +130,8 @@ def __bind_all(readline_module, bindings, msg_stream=None):
     else:
       return b
 
-  def __get_binding(b):
-    if type(b) == types.TupleType:
-      return b[0]
-    else:
-      return b
+  bindings = [(__get_readable_keyseq(k), __get_readable_binding(b))
+      for k, b in __BINDINGS.iteritems()]
 
-  for k, b in bindings.iteritems():
-    readline_module.parse_and_bind("%s: %s" % (k, __get_binding(b)))
-
-  # Remind myself that the mapping has been performed.
-  if msg_stream:
-    print >> msg_stream, 'Enabled key mappings:'
-    bindings = [(__get_readable_keyseq(k), __get_readable_binding(b))
-        for k, b in __bindings__.items()]
-    for k, b in sorted(bindings):
-      print >> msg_stream, '  % 8s  ->  %s' % (k, b)
+  return sorted(bindings)
 
