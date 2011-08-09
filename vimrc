@@ -244,6 +244,8 @@ inoremap <C-K> <C-D>
 " the myriad ways to move down a line:
 "  http://vimdoc.sourceforge.net/htmldoc/motion.html#CTRL-P
 inoremap <C-J> <C-T>
+inoremap <C-T> <C-N>
+inoremap <A-T> <C-P>
 " Note:  To correspond with Readline, it would be more correct
 " to define this as 'imap <C-D> <C-O>de', but 'dw' is more convenient.
 imap <C-D> <C-O>dw
