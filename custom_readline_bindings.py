@@ -90,8 +90,8 @@ __BINDINGS = {
   r'"\ed"':         ('delete-char', 'delete-char (forward)'),
 
   # Remap C-r and C-s character-search commands to C-a and C-e
-  r'"\ea"':         ('character-search-backward', 'char-search-forward (towards beginning of line)'),
-  r'"\ee"':         ('character-search', 'char-search-backward (towards end of line)'),
+  r'"\ea"':         ('character-search-backward', 'char-search-backward (towards beginning of line)'),
+  r'"\ee"':         ('character-search', 'char-search-forward (towards end of line)'),
 
   r'C-h':           'previous-history',
   r'C-n':           'next-history',  # Already the default
