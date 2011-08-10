@@ -13,10 +13,8 @@
 " Disable viminfo.
 :set viminfo=""
 
-" Switch off that abominable syntax highlighting.
-" Vim version 7.0.235 complains that:
-" Sorry, the command is not available in this version: :syntax off
-:syntax off
+" Switch off syntax highlighting, if so desired.
+":syntax off
 
 " Switch off search pattern highlighting.
 :set nohlsearch
@@ -50,17 +48,27 @@
 au BufEnter *.txt set tw=79
 
 " In Normal (Command) Mode, enable the following mappings:
-" 1. K to "break long line before edge of screen".
-" 2. ; as the first part of "move to next window".
+" 1. K : "break long line before edge of screen".
+" 2. t : the first part of "move to next window".
 "
 " (Hence:
-" ;w to change to the next window in order;
-" ;h to move to the next window left;
-" ;j to move to the next window down;
-" ;n to open a new, unnamed window (equivalent to :'new');
-" etc.)
-:nmap K 82\|Bhr<Enter>
-:nnoremap ; <C-W>
+"  ts : open ("split") a new window (equivalent to ':sp')
+"  tv : open ("vsplit") a new window vertically (equivalent to ':vs')
+"  tn : open a new, unnamed window (equivalent to ':new')
+"  tw : move down/right to the next window in order (in a cycle)
+"  tt : move to the top-left window
+"  tp : move to the "previous" (most-recent) window
+"  th : move to the next window left
+"  tj : move to the next window down
+"  etc.)
+" http://vimdoc.sourceforge.net/htmldoc/windows.html
+"
+" Note that this clobbers the previous meaning of 't', namely:
+" Move forward to just before char in current line.  Given the
+" existence of the almost-identical command 'f', I'm OK with that.
+"
+:nmap <silent> K 82\|Bhr<Enter>
+:nnoremap <silent> t <C-W>
 
 " /*
 "  * C-style comments.
@@ -169,6 +177,17 @@ set wildmenu
 
 " The following configurations added on 2011-08-09:
 
+" Note that Vim does not like Alt-key shortcuts, so we will avoid
+" use of the Alt key in mappings:
+"  http://vim.wikia.com/wiki/Fix_meta-keys_that_break_out_of_Insert_mode
+
+" Alto, don't use Ctrl+m (aka carriage return, <CR>) in any mappings,
+" because otherwise you'll lose Enter in Insert Mode.  :P
+" In contrast, there seem to be no ill-effects after remapping Ctrl+j
+" (newline/linefeed, <NL>).
+"  http://vimdoc.sourceforge.net/htmldoc/motion.html#CTRL-M
+"  http://vimdoc.sourceforge.net/htmldoc/motion.html#CTRL-J
+
 " Replace the default 'w', 'b' and 'e' mappings
 " instead of defining additional mappings',w', ',b' and ',e'.
 "
@@ -235,17 +254,6 @@ xnoremap <silent> iW iw
 " then return immediately to Insert Mode".
 imap <C-F> <C-O>w
 imap <C-B> <C-O>b
-" Note that this clobbers the previous meaning of C-D:
-" decrease indentation in Insert Mode.
-" Hence, we will remap Ctrl+d to Ctrl+k.
-inoremap <C-K> <C-D>
-" For symmetry, let's also remap C-T (increase indentation
-" in Insert Mode) to C-J.  By default, C-J is just one of
-" the myriad ways to move down a line:
-"  http://vimdoc.sourceforge.net/htmldoc/motion.html#CTRL-P
-inoremap <C-J> <C-T>
-inoremap <C-T> <C-N>
-inoremap <A-T> <C-P>
 " Note:  To correspond with Readline, it would be more correct
 " to define this as 'imap <C-D> <C-O>de', but 'dw' is more convenient.
 imap <C-D> <C-O>dw
@@ -256,6 +264,19 @@ imap <C-R> <C-O>db
 " Hence, let's remap C-_ to C-R
 inoremap <C-_> <C-R>
 cnoremap <C-_> <C-R>
+" This also clobbers the previous meaning of C-D:
+" decrease indentation in Insert Mode.
+" Hence, we will remap Ctrl+d to Ctrl+l ("Less indentation")
+inoremap <C-L> <C-D>
+" Since increasing indentation is not repeated as frequently
+" as cycling through completions, let's also swap the powerful
+" middle-finger C-T (increase indentation in Insert Mode) with
+" the weaker pinky-finger C-N ("iNcrease indentation").
+inoremap <C-N> <C-T>
+" Remap the frequently-repeated but pinky-finger commands C-P/C-N
+" to the much more powerful index/middle-finger commands C-H/C-T.
+inoremap <C-T> <C-N>
+inoremap <C-H> <C-P>
 
 " And some similar mappings for Command-line Mode:
 "  http://vimdoc.sourceforge.net/htmldoc/map.html#map-overview
@@ -263,7 +284,7 @@ cnoremap <C-_> <C-R>
 "
 " Unfortunately, I can't seem to repeat the Insert Mode mappings
 " above, since Ctrl+o doesn't have the same convenient function of
-" "execute a single command then return immediately to Insert Mode".
+" 'execute a single command then return immediately to Insert Mode'.
 " Hence, I'll use Shift+Right and Shift-Left, which are equivalent
 " to the default meanings of 'W' and 'B'.  Not perfect, but better
 " than nothing:
@@ -277,3 +298,21 @@ cnoremap <C-B> <S-Left>
 "  http://vimdoc.sourceforge.net/htmldoc/insert.html#i_CTRL-E
 imap <silent> <C-A> <C-O>^
 imap <silent> <C-E> <C-O>$
+
+" Some general convenience mappings for using tags...
+" Split the window and jump to the definition of the identifier
+" under the cursor.
+nnoremap <silent> <C-T> :sp<CR><C-]>
+" Kill this split window.  Won't close the window if it's the
+" last window (which would exit the program).
+nnoremap <silent> <C-K> :close<CR>
+" Jump to the definition of the identifier under the cursor.
+nnoremap <silent> <C-J> <C-]>
+" Pop the top of the tag stack.
+nnoremap <silent> <C-P> :pop<CR>
+
+" A few mappings for the Tagbar plugin:
+"  http://www.vim.org/scripts/script.php?script_id=3465
+" Quickly toggle the visibility of the tagbar.
+nnoremap <silent> T :TagbarToggle<CR>
+
