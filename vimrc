@@ -67,7 +67,7 @@ au BufEnter *.txt set tw=79
 " Move forward to just before char in current line.  Given the
 " existence of the almost-identical command 'f', I'm OK with that.
 "
-:nmap <silent> K 82\|Bhr<Enter>
+:nmap <silent> K 82\|<C-Left>hr<Enter>
 :nnoremap <silent> t <C-W>
 
 " /*
@@ -254,10 +254,34 @@ xnoremap <silent> iW iw
 " then return immediately to Insert Mode".
 imap <C-F> <C-O>w
 imap <C-B> <C-O>b
+" Update: The obvious implementation of <C-R> as <C-O>db fails if the
+" cursor is at the end of the line (ie, if you're typing a new line),
+" since the <C-O>, which effectively ESCs out of Insert Mode, will
+" cause the cursor to step back onto the last character that exists,
+" which will be the last character of the word; then the "db" will
+" delete the characters *before* teh cursor.
+"imap <C-R> <C-O>db
+"
+" Also, neither "bdw" nor "bde" work at all, due to what appears to be
+" a bug in the CamelCaseMotion plugin.  :\
+"
+" As a work-around, let's use "vbd" -- with the added proviso that
+" "vb" *also* seems to contain a bug:  It goes back 1 char too far
+" to the left!  -.-
+" We could change this to "vbld", but then it will be wrong at the
+" BEGINNING of the line!  FML.
+" If we use "vib" instead of "vb", it will not select any space
+" trailing the word, so the space will accumulate after successive
+" rubouts.  In addition, it suffers from the same problem as "vbd".
+" So, it looks like "vbld" is the least-broken approach for now.
+imap <C-R> _<C-O>vbld
 " Note:  To correspond with Readline, it would be more correct
-" to define this as 'imap <C-D> <C-O>de', but 'dw' is more convenient.
-imap <C-D> <C-O>dw
-imap <C-R> <C-O>db
+" to define this as 'imap <C-D> <C-O>de', but "dw" is more convenient.
+"imap <C-D> <C-O>dw
+" OTOH: "dw" doesn't work if the cursor is on or immediately before
+" the last word of the line.  -.- -.- -.-
+" So, I guess "ved" it is...
+imap <C-D> <C-O>ved
 " Note that this clobbers the previous meaning of C-R:
 " insert the contents of a register:
 "  http://vimdoc.sourceforge.net/htmldoc/insert.html#i_CTRL-R
