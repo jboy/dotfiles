@@ -1,0 +1,50 @@
+# $HOME/.screenrc
+# Screen init & config file.
+# James Boyden, 2011-08-22
+
+# Automatically detach upon hangup.
+autodetach on
+
+# None of the following seem to work for this: ^_, ^S, ^@, ^0
+# Then I went with ^], but I was concerned that might mess with
+# pasting after copy mode.
+#escape ^]]
+# Then I tried ^^, but it was necessary to press Ctrl+Shift-1,
+# which was too awkward for regular usage.
+#escape ^^\^
+# By choosing ^Z, I lose the ability to suspend Screen.
+# (Though I can still suspend anything running *in* Screen, of course,
+# by the usual ^Zz combo.)
+# Hopefully I'm not doing something stupid by disabling the ability to
+# suspend Screen...
+escape ^Zz
+
+# Recommended by http://magazine.redhat.com/2007/09/27/a-guide-to-gnu-screen/
+#hardstatus alwayslastline "%{= kG}[ %{G}%H %{g}][%= %{=kw}%?%-Lw%?%{r}(%{W}%n*%f%t%?(%u)%?%{r})%{w}%?%+Lw%?%?%= %{g}][%{B}%Y-%m-%d %{W}%c %{g}]"
+
+# I've modified the RedHat example slightly to include a short reminder of
+# what the escape key is.  (I also removed the date, since I can check that
+# easily-enough by running 'date'.)
+hardstatus alwayslastline "%{= kG}[ %{W}%H %{g}][%= %{=kw}%?%-Lw%?%{r}(%{W}%n*%f%t%?(%u)%?%{r})%{w}%?%+Lw%?%?%= %{g}][%{B}%C %A %{g}][ %{w}esc = C-z %{g}]"
+
+# Don't waste my time with the startup message anymore...
+startup_message off
+
+# From Matt Cutts, http://www.mattcutts.com/blog/screen-power-tips-screenrc/
+# From http://www4.informatik.uni-erlangen.de/~jnweiger/screen-faq.html
+# Q: My xterm scrollbar does not work with screen.
+# A: The problem is that xterm will not allow scrolling if the alternate
+# text buffer is selected. The standard definitions of the termcap
+# initialize capabilities ti and te switch to and from the alternate
+# text buffer. (The scrollbar also does not work when you start e.g. ‘vi’).
+# You can tell screen not to use these initialisations by adding the line
+# “termcapinfo xterm ti@:te@” to your ~/.screenrc file.
+#termcapinfo xterm ti@:te@
+# Unfortunately, the scrollbar still doesn't work properly after this is
+# enabled.  (I'm using Gnome Terminal.)  The terminal realises there is
+# more text, so scales the size of the scrollbar accordingly; but the
+# scrollbar position is not updated to jump to the end.
+# Also PageUp/PageDown don't work properly -- they scroll the terminal
+# screens, not the text in Screen -- so the first time you press PageUp,
+# you jump up to the text before the Screen session.
+
