@@ -13,10 +13,8 @@
 " Disable viminfo.
 :set viminfo=""
 
-" Switch off that abominable syntax highlighting.
-" Vim version 7.0.235 complains that:
-" Sorry, the command is not available in this version: :syntax off
-:syntax off
+" Switch off syntax highlighting, if so desired.
+":syntax off
 
 " Switch off search pattern highlighting.
 :set nohlsearch
@@ -52,10 +50,27 @@ au BufEnter *.txt set tw=79
 au BufEnter *.nobr set tw=0
 
 " In Normal (Command) Mode, enable the following mappings:
-" K to "break long line before edge of screen".
-" ; to "move to next window".
-:nmap K 82\|Bhr<Enter>
-:nmap ; <C-W>w
+" 1. K : "break long line before edge of screen".
+" 2. t : the first part of "move to next window".
+"
+" (Hence:
+"  ts : open ("split") a new window (equivalent to ':sp')
+"  tv : open ("vsplit") a new window vertically (equivalent to ':vs')
+"  tn : open a new, unnamed window (equivalent to ':new')
+"  tw : move down/right to the next window in order (in a cycle)
+"  tt : move to the top-left window
+"  tp : move to the "previous" (most-recent) window
+"  th : move to the next window left
+"  tj : move to the next window down
+"  etc.)
+" http://vimdoc.sourceforge.net/htmldoc/windows.html
+"
+" Note that this clobbers the previous meaning of 't', namely:
+" Move forward to just before char in current line.  Given the
+" existence of the almost-identical command 'f', I'm OK with that.
+"
+:nmap <silent> K 82\|<C-Left>hr<Enter>
+:nnoremap <silent> t <C-W>
 
 " /*
 "  * C-style comments.
@@ -161,4 +176,169 @@ au BufEnter *.css set ai tw=0 ts=4 sw=4
 " See http://stackoverflow.com/questions/526858/how-do-i-make-vim-do-normal-bash-like-tab-completion-for-file-names
 set wildmode=longest,list,full
 set wildmenu
+
+" The following configurations added on 2011-08-09:
+
+" Note that Vim does not like Alt-key shortcuts, so we will avoid
+" use of the Alt key in mappings:
+"  http://vim.wikia.com/wiki/Fix_meta-keys_that_break_out_of_Insert_mode
+
+" Alto, don't use Ctrl+m (aka carriage return, <CR>) in any mappings,
+" because otherwise you'll lose Enter in Insert Mode.  :P
+" In contrast, there seem to be no ill-effects after remapping Ctrl+j
+" (newline/linefeed, <NL>).
+"  http://vimdoc.sourceforge.net/htmldoc/motion.html#CTRL-M
+"  http://vimdoc.sourceforge.net/htmldoc/motion.html#CTRL-J
+
+" Replace the default 'w', 'b' and 'e' mappings
+" instead of defining additional mappings',w', ',b' and ',e'.
+"
+" This uses the amazing CamelCaseMotion plugin:
+"  http://www.vim.org/scripts/script.php?script_id=1905
+" These mappings are taken from the examples on that page.
+"
+" The CamelCaseMotion plugin enables the 'w', 'b' and 'e'
+" commands to recognise underscores and CamelCase boundaries,
+" without breaking ^N/^P completion (as is the unfortunate
+" result of the "set iskeyword-=_" approach)
+"  http://stackoverflow.com/questions/1279462/how-can-i-configure-vim-so-that-movement-commands-will-include-underscores-and-ca
+"
+" Note: Ensure there are no trailing space characters at the end
+" of these lines, or the mappings will be messed up.
+map <silent> w <Plug>CamelCaseMotion_w
+map <silent> b <Plug>CamelCaseMotion_b
+map <silent> e <Plug>CamelCaseMotion_e
+sunmap w
+sunmap b
+sunmap e
+
+" Replace default 'iw' text-object and define 'ib' and 'ie' motions.
+" Also from the examples on:
+"  http://www.vim.org/scripts/script.php?script_id=1905
+"
+" These motions may be used as visual mode operators:
+"  http://vimdoc.sourceforge.net/htmldoc/visual.html#visual-operators
+" eg, to visually-select the current word, use 'viw'.
+"
+" Note: Ensure there are no trailing space characters at the end
+" of these lines, or the mappings will be messed up.
+omap <silent> iw <Plug>CamelCaseMotion_iw
+xmap <silent> iw <Plug>CamelCaseMotion_iw
+omap <silent> ib <Plug>CamelCaseMotion_ib
+xmap <silent> ib <Plug>CamelCaseMotion_ib
+omap <silent> ie <Plug>CamelCaseMotion_ie
+xmap <silent> ie <Plug>CamelCaseMotion_ie
+
+" Now change the meanings of 'W', 'B' and 'E' (which by default
+" jump to the next/previous whitespace) with the default meanings
+" of 'w', 'b' and 'e' (ie, whole "words" as defined by 'iskeyword').
+"  http://vimdoc.sourceforge.net/htmldoc/motion.html#word
+"  http://vimdoc.sourceforge.net/htmldoc/options.html#'iskeyword'
+noremap W w
+noremap B b
+noremap E e
+
+" Do a similar thing to convert 'iW' to what 'iw' used to be.
+" (There are no 'ib' or 'ie' by default.)
+onoremap <silent> iW iw
+xnoremap <silent> iW iw
+
+" Some convenient Insert mode mappings:
+" Based upon examples at:
+"  http://stackoverflow.com/questions/3602007/vim-del-in-insert-mode
+"  http://stackoverflow.com/questions/1737163/vim-traversing-text-in-insert-mode
+"  http://vim.wikia.com/wiki/Mapping_keys_in_Vim_-_Tutorial_(Part_1)
+"
+" Note that 'imap' does what I want here; if I use 'inoremap',
+" I lose the CamelCaseMotion mappings defined above.
+"
+" Ctrl+o followed by a single command means "execute this command
+" then return immediately to Insert Mode".
+imap <C-F> <C-O>w
+imap <C-B> <C-O>b
+" Update: The obvious implementation of <C-R> as <C-O>db fails if the
+" cursor is at the end of the line (ie, if you're typing a new line),
+" since the <C-O>, which effectively ESCs out of Insert Mode, will
+" cause the cursor to step back onto the last character that exists,
+" which will be the last character of the word; then the "db" will
+" delete the characters *before* teh cursor.
+"imap <C-R> <C-O>db
+"
+" Also, neither "bdw" nor "bde" work at all, due to what appears to be
+" a bug in the CamelCaseMotion plugin.  :\
+"
+" As a work-around, let's use "vbd" -- with the added proviso that
+" "vb" *also* seems to contain a bug:  It goes back 1 char too far
+" to the left!  -.-
+" We could change this to "vbld", but then it will be wrong at the
+" BEGINNING of the line!  FML.
+" If we use "vib" instead of "vb", it will not select any space
+" trailing the word, so the space will accumulate after successive
+" rubouts.  In addition, it suffers from the same problem as "vbd".
+" So, it looks like "vbld" is the least-broken approach for now.
+imap <C-R> _<C-O>vbld
+" Note:  To correspond with Readline, it would be more correct
+" to define this as 'imap <C-D> <C-O>de', but "dw" is more convenient.
+"imap <C-D> <C-O>dw
+" OTOH: "dw" doesn't work if the cursor is on or immediately before
+" the last word of the line.  -.- -.- -.-
+" So, I guess "ved" it is...
+imap <C-D> <C-O>ved
+" Note that this clobbers the previous meaning of C-R:
+" insert the contents of a register:
+"  http://vimdoc.sourceforge.net/htmldoc/insert.html#i_CTRL-R
+" Hence, let's remap C-_ to C-R
+inoremap <C-_> <C-R>
+cnoremap <C-_> <C-R>
+" This also clobbers the previous meaning of C-D:
+" decrease indentation in Insert Mode.
+" Hence, we will remap Ctrl+d to Ctrl+l ("Less indentation")
+inoremap <C-L> <C-D>
+" Since increasing indentation is not repeated as frequently
+" as cycling through completions, let's also swap the powerful
+" middle-finger C-T (increase indentation in Insert Mode) with
+" the weaker pinky-finger C-N ("iNcrease indentation").
+inoremap <C-N> <C-T>
+" Remap the frequently-repeated but pinky-finger commands C-P/C-N
+" to the much more powerful index/middle-finger commands C-H/C-T.
+inoremap <C-T> <C-N>
+inoremap <C-H> <C-P>
+
+" And some similar mappings for Command-line Mode:
+"  http://vimdoc.sourceforge.net/htmldoc/map.html#map-overview
+"  http://vimdoc.sourceforge.net/htmldoc/cmdline.html#Command-line
+"
+" Unfortunately, I can't seem to repeat the Insert Mode mappings
+" above, since Ctrl+o doesn't have the same convenient function of
+" 'execute a single command then return immediately to Insert Mode'.
+" Hence, I'll use Shift+Right and Shift-Left, which are equivalent
+" to the default meanings of 'W' and 'B'.  Not perfect, but better
+" than nothing:
+"  http://vimdoc.sourceforge.net/htmldoc/motion.html#<S-Right>
+cnoremap <C-F> <S-Right>
+cnoremap <C-B> <S-Left>
+
+" Mimic the Ctrl+A and Ctrl+E of Emacs in Insert Mode,
+" replacing the useless default functions of these shortcuts:
+"  http://vimdoc.sourceforge.net/htmldoc/insert.html#i_CTRL-A
+"  http://vimdoc.sourceforge.net/htmldoc/insert.html#i_CTRL-E
+imap <silent> <C-A> <C-O>^
+imap <silent> <C-E> <C-O>$
+
+" Some general convenience mappings for using tags...
+" Split the window and jump to the definition of the identifier
+" under the cursor.
+nnoremap <silent> <C-T> :sp<CR><C-]>
+" Kill this split window.  Won't close the window if it's the
+" last window (which would exit the program).
+nnoremap <silent> <C-K> :close<CR>
+" Jump to the definition of the identifier under the cursor.
+nnoremap <silent> <C-J> <C-]>
+" Pop the top of the tag stack.
+nnoremap <silent> <C-P> :pop<CR>
+
+" A few mappings for the Tagbar plugin:
+"  http://www.vim.org/scripts/script.php?script_id=3465
+" Quickly toggle the visibility of the tagbar.
+nnoremap <silent> T :TagbarToggle<CR>
 

@@ -38,7 +38,7 @@ fi
 export EDITOR=/usr/bin/vim
 
 # Per-user Python configuration.
-export PYTHONSTARTUP=~/.pythonrc
+export PYTHONSTARTUP=~/.pythonrc.py
 
 # For thesis.
 export TEXINPUTS=".:${HOME}/Study/MIT/2011/Schwa_Lab_Git_Repos/tex//:"
