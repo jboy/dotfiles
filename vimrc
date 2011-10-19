@@ -203,12 +203,12 @@ set wildmenu
 "
 " Note: Ensure there are no trailing space characters at the end
 " of these lines, or the mappings will be messed up.
-map <silent> w <Plug>CamelCaseMotion_w
-map <silent> b <Plug>CamelCaseMotion_b
-map <silent> e <Plug>CamelCaseMotion_e
-sunmap w
-sunmap b
-sunmap e
+au BufEnter *.c,*.cc,*.cpp,*.h,*.hh,*.hpp,*.py map <silent> w <Plug>CamelCaseMotion_w
+au BufEnter *.c,*.cc,*.cpp,*.h,*.hh,*.hpp,*.py map <silent> b <Plug>CamelCaseMotion_b
+au BufEnter *.c,*.cc,*.cpp,*.h,*.hh,*.hpp,*.py map <silent> e <Plug>CamelCaseMotion_e
+au BufEnter *.c,*.cc,*.cpp,*.h,*.hh,*.hpp,*.py sunmap w
+au BufEnter *.c,*.cc,*.cpp,*.h,*.hh,*.hpp,*.py sunmap b
+au BufEnter *.c,*.cc,*.cpp,*.h,*.hh,*.hpp,*.py sunmap e
 
 " Replace default 'iw' text-object and define 'ib' and 'ie' motions.
 " Also from the examples on:
@@ -220,26 +220,26 @@ sunmap e
 "
 " Note: Ensure there are no trailing space characters at the end
 " of these lines, or the mappings will be messed up.
-omap <silent> iw <Plug>CamelCaseMotion_iw
-xmap <silent> iw <Plug>CamelCaseMotion_iw
-omap <silent> ib <Plug>CamelCaseMotion_ib
-xmap <silent> ib <Plug>CamelCaseMotion_ib
-omap <silent> ie <Plug>CamelCaseMotion_ie
-xmap <silent> ie <Plug>CamelCaseMotion_ie
+au BufEnter *.c,*.cc,*.cpp,*.h,*.hh,*.hpp,*.py omap <silent> iw <Plug>CamelCaseMotion_iw
+au BufEnter *.c,*.cc,*.cpp,*.h,*.hh,*.hpp,*.py xmap <silent> iw <Plug>CamelCaseMotion_iw
+au BufEnter *.c,*.cc,*.cpp,*.h,*.hh,*.hpp,*.py omap <silent> ib <Plug>CamelCaseMotion_ib
+au BufEnter *.c,*.cc,*.cpp,*.h,*.hh,*.hpp,*.py xmap <silent> ib <Plug>CamelCaseMotion_ib
+au BufEnter *.c,*.cc,*.cpp,*.h,*.hh,*.hpp,*.py omap <silent> ie <Plug>CamelCaseMotion_ie
+au BufEnter *.c,*.cc,*.cpp,*.h,*.hh,*.hpp,*.py xmap <silent> ie <Plug>CamelCaseMotion_ie
 
 " Now change the meanings of 'W', 'B' and 'E' (which by default
 " jump to the next/previous whitespace) with the default meanings
 " of 'w', 'b' and 'e' (ie, whole "words" as defined by 'iskeyword').
 "  http://vimdoc.sourceforge.net/htmldoc/motion.html#word
 "  http://vimdoc.sourceforge.net/htmldoc/options.html#'iskeyword'
-noremap W w
-noremap B b
-noremap E e
+au BufEnter *.c,*.cc,*.cpp,*.h,*.hh,*.hpp,*.py noremap W w
+au BufEnter *.c,*.cc,*.cpp,*.h,*.hh,*.hpp,*.py noremap B b
+au BufEnter *.c,*.cc,*.cpp,*.h,*.hh,*.hpp,*.py noremap E e
 
 " Do a similar thing to convert 'iW' to what 'iw' used to be.
 " (There are no 'ib' or 'ie' by default.)
-onoremap <silent> iW iw
-xnoremap <silent> iW iw
+au BufEnter *.c,*.cc,*.cpp,*.h,*.hh,*.hpp,*.py onoremap <silent> iW iw
+au BufEnter *.c,*.cc,*.cpp,*.h,*.hh,*.hpp,*.py xnoremap <silent> iW iw
 
 " Some convenient Insert mode mappings:
 " Based upon examples at:
@@ -274,7 +274,10 @@ imap <C-B> <C-O>b
 " trailing the word, so the space will accumulate after successive
 " rubouts.  In addition, it suffers from the same problem as "vbd".
 " So, it looks like "vbld" is the least-broken approach for now.
-imap <C-R> _<C-O>vbld
+"
+" Question, 2011-10-18:  Why was that leading underscore there??
+"imap <C-R> _<C-O>vbld
+au BufEnter *.c,*.cc,*.cpp,*.h,*.hh,*.hpp,*.py imap <C-R> <C-O>h<C-O>vbld
 " Note:  To correspond with Readline, it would be more correct
 " to define this as 'imap <C-D> <C-O>de', but "dw" is more convenient.
 "imap <C-D> <C-O>dw
@@ -327,9 +330,9 @@ imap <silent> <C-E> <C-O>$
 " Split the window and jump to the definition of the identifier
 " under the cursor.
 nnoremap <silent> <C-T> :sp<CR><C-]>
-" Kill this split window.  Won't close the window if it's the
+" Close this split window.  Won't close the window if it's the
 " last window (which would exit the program).
-nnoremap <silent> <C-K> :close<CR>
+nnoremap <silent> <C-X> :close<CR>
 " Jump to the definition of the identifier under the cursor.
 nnoremap <silent> <C-J> <C-]>
 " Pop the top of the tag stack.
@@ -339,4 +342,7 @@ nnoremap <silent> <C-P> :pop<CR>
 "  http://www.vim.org/scripts/script.php?script_id=3465
 " Quickly toggle the visibility of the tagbar.
 nnoremap <silent> T :TagbarToggle<CR>
+
+" Useful for both programming and LaTeX writing...
+nnoremap <silent> <C-K> :!make<CR>
 
