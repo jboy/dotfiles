@@ -348,3 +348,7 @@ nnoremap <silent> T :TagbarToggle<CR>
 " Useful for both programming and LaTeX writing...
 nnoremap <silent> <C-K> :!make<CR>
 
+" Only source this if we're editing a LaTeX file; it drops its mappings
+" into the main namespace, which is pretty irritating for other file-types.
+autocmd Filetype tex source ~/.vim/source_explicitly/auctex.vim
+
