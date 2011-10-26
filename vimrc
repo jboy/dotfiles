@@ -256,12 +256,13 @@ au BufEnter *.c,*.cc,*.cpp,*.h,*.hh,*.hpp,*.py xnoremap <silent> iW iw
 " then return immediately to Insert Mode".
 imap <C-F> <C-O>w
 imap <C-B> <C-O>b
+
 " Update: The obvious implementation of <C-R> as <C-O>db fails if the
 " cursor is at the end of the line (ie, if you're typing a new line),
 " since the <C-O>, which effectively ESCs out of Insert Mode, will
 " cause the cursor to step back onto the last character that exists,
 " which will be the last character of the word; then the "db" will
-" delete the characters *before* teh cursor.
+" delete the characters *before* the cursor.
 "imap <C-R> <C-O>db
 "
 " Also, neither "bdw" nor "bde" work at all, due to what appears to be
@@ -279,7 +280,43 @@ imap <C-B> <C-O>b
 "
 " Question, 2011-10-18:  Why was that leading underscore there??
 "imap <C-R> _<C-O>vbld
-au BufEnter *.c,*.cc,*.cpp,*.h,*.hh,*.hpp,*.py imap <C-R> <C-O>h<C-O>vbld
+"au BufEnter *.c,*.cc,*.cpp,*.h,*.hh,*.hpp,*.py imap <C-R> <C-O>h<C-O>vbld
+" Question, 2011-10-22:  Why did I add '<C-O>h' at the beginning??
+"
+" OK, this is getting ludicrous.  Time to write out some test cases.
+" 1. If you're typing at the end of the line, eg, "foo bar baz", you want
+"   <C-O>vbld  " this leaves a space after 'bar'
+" 2. If you're typing at the end of the line of CamelCase, eg, "FooBarBaz", you want
+"   <C-O>vbld  " this leaves the cursor immediately after 'Bar'.
+" 3. If you're typing at the end of the line of underscored_text, eg, "foo_bar_baz", you want
+"   <C-O>vbld  " this leaves the cursor immediately after 'bar_'.
+" 4. If you go all the way back to the beginning of the line, then '<C-O>vbld'
+"   will not delete the very first character of the line.
+" 5. '<C-O>vbld' works correctly for single-character words (except, of course,
+"   for the very first character of the line.
+"au BufEnter *.c,*.cc,*.cpp,*.h,*.hh,*.hpp,*.py imap <C-R> <C-O>vbld
+"
+" 6. Ah, OK, now I see why I included the '<C-O>h':  If you are in Insert Mode
+"   and the cursor is on the 'z' of "foo bar bozo", then when you press <C-R>
+"   it will inappropriately delete the 'z' in addition to 'bo'.
+"   Hence, what if we insert a space then '<C-O>h'?
+"au BufEnter *.c,*.cc,*.cpp,*.h,*.hh,*.hpp,*.py imap <C-R>  <C-O>h<C-O>vbld
+"
+" No, that breaks test case #1 above: the final 'z' will now remain.
+" Basically, the issue seems to come down to: Do you want to delete the
+" character under the cursor?  In general, the answer is No, unless it's
+" a whitespace character or you're at the end of a word.  However, mostly
+" when we're typing naturally, we *will* be using this at the end of a word.
+"
+" '<C-O>vobd' doesn't work for CamelCase (it removes that 'l' at the end of
+" the preceding word also).
+" '<C-O>vobld' seems to behave the same as '<C-O>vbld'.
+"au BufEnter *.c,*.cc,*.cpp,*.h,*.hh,*.hpp,*.py imap <C-R> <C-O>vobd
+
+" For non-CamelCaseMotion text, we can just borrow the default <C-W> behaviour.
+imap <C-R> <C-W>
+au BufEnter *.c,*.cc,*.cpp,*.h,*.hh,*.hpp,*.py imap <C-R> <C-O>vbld
+
 " Note:  To correspond with Readline, it would be more correct
 " to define this as 'imap <C-D> <C-O>de', but "dw" is more convenient.
 "imap <C-D> <C-O>dw
@@ -338,7 +375,8 @@ nnoremap <silent> <C-X> :close<CR>
 " Jump to the definition of the identifier under the cursor.
 nnoremap <silent> <C-J> <C-]>
 " Pop the top of the tag stack.
-nnoremap <silent> <C-P> :pop<CR>
+" OK, we've stolen the use of C-P and given it to 'Pipe into Python' below.
+"nnoremap <silent> <C-P> :pop<CR>
 
 " A few mappings for the Tagbar plugin:
 "  http://www.vim.org/scripts/script.php?script_id=3465
@@ -348,7 +386,35 @@ nnoremap <silent> T :TagbarToggle<CR>
 " Useful for both programming and LaTeX writing...
 nnoremap <silent> <C-K> :!make<CR>
 
+" When there is a visual area of Python code highlighted, press C-P
+" to pipe that code into the Python interpreter to be executed.
+"
+" Note:
+"   :write !python<CR>
+" runs the command 'python', pipes the selected text into it and presents
+" the result on stdout.  This contrasts with
+"   :write! python<CR>
+" which forces the writing of a new file called 'python' in the current
+" directory; and also contrasts with
+"   :!python
+" which will pipe the visually-selected text into the command 'python'
+" and replace the visually-selected text with the result.
+"
+" See http://vimdoc.sourceforge.net/htmldoc/usr_10.html#10.9
+" and http://vimdoc.sourceforge.net/htmldoc/usr_10.html#10.6
+" and http://vimdoc.sourceforge.net/htmldoc/change.html#filter
+" for details.
+au BufEnter *.py vnoremap <C-P> :write !python<CR>
+
+" If there is no visual highlight, run from the beginning of the file
+" to the current line.
+au BufEnter *.py nnoremap <C-P> :1,.write !python<CR>
+
 " Only source this if we're editing a LaTeX file; it drops its mappings
 " into the main namespace, which is pretty irritating for other file-types.
-autocmd Filetype tex source ~/.vim/source_explicitly/auctex.vim
+"
+" Update, 2011-10-24:  OK, it's pissing me off a bit... it seems to trigger
+" LaTeX-compiles (and complaints about errors that interrupt my train of
+" thought) at arbitrary/unexpected moments.  Disabling it now...
+"autocmd Filetype tex source ~/.vim/source_explicitly/auctex.vim
 
