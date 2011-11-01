@@ -151,6 +151,7 @@ au BufEnter *.tex set ai tw=0 ts=2 sw=2
 " Dont break long lines.
 " Also, DO auto-indent.
 au BufEnter *.wiktex set ai tw=0
+au BufEnter *.wiktex nmap K 99\|Bhr<Enter>
 
 " Also, ^N/^P-expand across hyphens in Insert mode.
 " See http://vim.1045645.n5.nabble.com/Adding-hyphen-to-iskeyword-but-only-for-keyword-completion-td3279651.html
