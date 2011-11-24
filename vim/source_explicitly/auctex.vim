@@ -49,7 +49,7 @@ let b:template_4 = '~/Storage/Latex/exam.tex'
 "let b:latex_command = "! xterm -bg ivory -fn 7x14 -e latex \\\\nonstopmode \\\\input\\{%\\}; cat %<.log"
 "let b:latex_command = "! xterm -e latex \\\\nonstopmode \\\\input\\{%\\}"
 "let b:latex_command = "!latex \\\\nonstopmode \\\\input\\{%\\}"
-let b:latex_command = "!make"
+let b:latex_command = "!make -f Makefile"
 "let b:dvi_viewer_command = "! xdvi -expert -s 6 -margins 2cm -geometry 750x950 %< &"
 "let b:dvi_viewer_command = "! kdvi %< &"
 
