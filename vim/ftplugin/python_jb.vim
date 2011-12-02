@@ -8,6 +8,18 @@ source ~/.vim/ftplugin/programming_common_jb.vim
 "  http://code.google.com/p/soc/wiki/PythonStyleGuide#Indentation
 set ai expandtab tw=0 ts=2 sw=2
 
+" Some mappings for convenient navigation.
+noremap [a vi(
+noremap [i vi[
+noremap ( ?[[({]<CR>
+noremap ) /[[({]<CR>
+noremap ; ?[,.;:]<CR>
+noremap , /[,.;:]<CR>
+"noremap = <Esc>/=[^=]<CR>wv$
+noremap = <Esc>/=[^=]<CR>wv$?[^:]<CR>o
+noremap g= <Esc>B?=[^=]<CR>wv$?[^:]<CR>o
+"noremap ] <Esc>/^[^#]*\\\zs\\\<if\\\>\\\|^[^#]*\\\zs\\\<in\\\><CR>wv$?[^:]<CR>o
+
 " When there is a visual area of Python code highlighted, press C-P
 " to pipe that code into the Python interpreter to be executed.
 "
@@ -26,9 +38,9 @@ set ai expandtab tw=0 ts=2 sw=2
 " and http://vimdoc.sourceforge.net/htmldoc/usr_10.html#10.6
 " and http://vimdoc.sourceforge.net/htmldoc/change.html#filter
 " for details.
-vnoremap <C-P> :write !python<CR>
+vnoremap <C-P><C-P> :write !python<CR>
 
 " If there is no visual highlight, run from the beginning of the file
 " to the current line.
-nnoremap <C-P> :1,.write !python<CR>
+nnoremap <C-P><C-P> :1,.write !python<CR>
 

@@ -27,17 +27,17 @@
 " vim (>= 7)
 "
 " Shortcuts:
-"   ]t      -- Jump to beginning of block
-"   ]e      -- Jump to end of block
-"   ]v      -- Select (Visual Line Mode) block
-"   ]<      -- Shift block to left
-"   ]>      -- Shift block to right
-"   ]#      -- Comment selection
-"   ]u      -- Uncomment selection
-"   ]c      -- Select current/previous class
-"   ]d      -- Select current/previous function
-"   ]<up>   -- Jump to previous line with the same/lower indentation
-"   ]<down> -- Jump to next line with the same/lower indentation
+"   _[      -- Jump to beginning of block
+"   _]      -- Jump to end of block
+"   [b      -- Select (Visual Line Mode) block
+"   [<      -- Shift block to left
+"   [>      -- Shift block to right
+"   _#      -- Comment selection
+"   _u      -- Uncomment selection
+"   [c      -- Select current/previous class
+"   [d      -- Select current/previous function
+"   _<up>   -- Jump to previous line with the same/lower indentation
+"   _<down> -- Jump to next line with the same/lower indentation
 
 " Only do this when not done yet for this buffer
 if exists("b:loaded_py_ftplugin")
@@ -45,94 +45,94 @@ if exists("b:loaded_py_ftplugin")
 endif
 let b:loaded_py_ftplugin = 1
 
-map  ]t   :PBoB<CR>
-vmap ]t   :<C-U>PBOB<CR>m'gv``
-map  ]e   :PEoB<CR>
-vmap ]e   :<C-U>PEoB<CR>m'gv``
+map  _[   :PBoB<CR>
+vmap _[   :<C-U>PBOB<CR>m'gv``
+map  _]   :PEoB<CR>
+vmap _]   :<C-U>PEoB<CR>m'gv``
 
-map  ]v   ]tV]e
-map  ]<   ]tV]e<
-vmap ]<   <
-map  ]>   ]tV]e>
-vmap ]>   >
+map  [b   _[V_]
+map  [<   _[V_]<
+vmap [<   <
+map  [>   _[V_]>
+vmap [>   >
 
-map  ]#   :call PythonCommentSelection()<CR>
-vmap ]#   :call PythonCommentSelection()<CR>
-map  ]u   :call PythonUncommentSelection()<CR>
-vmap ]u   :call PythonUncommentSelection()<CR>
+map  _#   :call PythonCommentSelection()<CR>
+vmap _#   :call PythonCommentSelection()<CR>
+map  _u   :call PythonUncommentSelection()<CR>
+vmap _u   :call PythonUncommentSelection()<CR>
 
-map  ]c   :call PythonSelectObject("class")<CR>
-map  ]d   :call PythonSelectObject("function")<CR>
+map  [c   :call PythonSelectObject("class")<CR>
+map  [f   :call PythonSelectObject("function")<CR>
 
-map  ]<up>    :call PythonNextLine(-1)<CR>
-map  ]<down>  :call PythonNextLine(1)<CR>
+map  _<up>    :call PythonNextLine(-1)<CR>
+map  _<down>  :call PythonNextLine(1)<CR>
 " You may prefer use <s-up> and <s-down>... :-)
 
 " jump to previous class
-map  ]J   :call PythonDec("class", -1)<CR>
-vmap ]J   :call PythonDec("class", -1)<CR>
+map  _C   :call PythonDec("class", -1)<CR>
+vmap _C   :call PythonDec("class", -1)<CR>
 
 " jump to next class
-map  ]j   :call PythonDec("class", 1)<CR>
-vmap ]j   :call PythonDec("class", 1)<CR>
+map  _c   :call PythonDec("class", 1)<CR>
+vmap _c   :call PythonDec("class", 1)<CR>
 
 " jump to previous function
-map  ]F   :call PythonDec("function", -1)<CR>
-vmap ]F   :call PythonDec("function", -1)<CR>
+map  _F   :call PythonDec("function", -1)<CR>
+vmap _F   :call PythonDec("function", -1)<CR>
 
 " jump to next function
-map  ]f   :call PythonDec("function", 1)<CR>
-vmap ]f   :call PythonDec("function", 1)<CR>
+map  _f   :call PythonDec("function", 1)<CR>
+vmap _f   :call PythonDec("function", 1)<CR>
 
 
 
 " Menu entries
-nmenu <silent> &Python.Update\ IM-Python\ Menu 
-    \:call UpdateMenu()<CR>
-nmenu &Python.-Sep1- :
-nmenu <silent> &Python.Beginning\ of\ Block<Tab>[t 
-    \]t
-nmenu <silent> &Python.End\ of\ Block<Tab>]e 
-    \]e
-nmenu &Python.-Sep2- :
-nmenu <silent> &Python.Shift\ Block\ Left<Tab>]< 
-    \]<
-vmenu <silent> &Python.Shift\ Block\ Left<Tab>]< 
-    \]<
-nmenu <silent> &Python.Shift\ Block\ Right<Tab>]> 
-    \]>
-vmenu <silent> &Python.Shift\ Block\ Right<Tab>]> 
-    \]>
-nmenu &Python.-Sep3- :
-vmenu <silent> &Python.Comment\ Selection<Tab>]# 
-    \]#
-nmenu <silent> &Python.Comment\ Selection<Tab>]# 
-    \]#
-vmenu <silent> &Python.Uncomment\ Selection<Tab>]u 
-    \]u
-nmenu <silent> &Python.Uncomment\ Selection<Tab>]u 
-    \]u
-nmenu &Python.-Sep4- :
-nmenu <silent> &Python.Previous\ Class<Tab>]J 
-    \]J
-nmenu <silent> &Python.Next\ Class<Tab>]j 
-    \]j
-nmenu <silent> &Python.Previous\ Function<Tab>]F 
-    \]F
-nmenu <silent> &Python.Next\ Function<Tab>]f 
-    \]f
-nmenu &Python.-Sep5- :
-nmenu <silent> &Python.Select\ Block<Tab>]v 
-    \]v
-nmenu <silent> &Python.Select\ Function<Tab>]d 
-    \]d
-nmenu <silent> &Python.Select\ Class<Tab>]c 
-    \]c
-nmenu &Python.-Sep6- :
-nmenu <silent> &Python.Previous\ Line\ wrt\ indent<Tab>]<up> 
-    \]<up>
-nmenu <silent> &Python.Next\ Line\ wrt\ indent<Tab>]<down> 
-    \]<down>
+"nmenu <silent> &Python.Update\ IM-Python\ Menu 
+"    \:call UpdateMenu()<CR>
+"nmenu &Python.-Sep1- :
+"nmenu <silent> &Python.Beginning\ of\ Block<Tab>[t 
+"    \]t
+"nmenu <silent> &Python.End\ of\ Block<Tab>]e 
+"    \]e
+"nmenu &Python.-Sep2- :
+"nmenu <silent> &Python.Shift\ Block\ Left<Tab>]< 
+"    \]<
+"vmenu <silent> &Python.Shift\ Block\ Left<Tab>]< 
+"    \]<
+"nmenu <silent> &Python.Shift\ Block\ Right<Tab>]> 
+"    \]>
+"vmenu <silent> &Python.Shift\ Block\ Right<Tab>]> 
+"    \]>
+"nmenu &Python.-Sep3- :
+"vmenu <silent> &Python.Comment\ Selection<Tab>]# 
+"    \]#
+"nmenu <silent> &Python.Comment\ Selection<Tab>]# 
+"    \]#
+"vmenu <silent> &Python.Uncomment\ Selection<Tab>]u 
+"    \]u
+"nmenu <silent> &Python.Uncomment\ Selection<Tab>]u 
+"    \]u
+"nmenu &Python.-Sep4- :
+"nmenu <silent> &Python.Previous\ Class<Tab>]J 
+"    \]J
+"nmenu <silent> &Python.Next\ Class<Tab>]j 
+"    \]j
+"nmenu <silent> &Python.Previous\ Function<Tab>]F 
+"    \]F
+"nmenu <silent> &Python.Next\ Function<Tab>]f 
+"    \]f
+"nmenu &Python.-Sep5- :
+"nmenu <silent> &Python.Select\ Block<Tab>]v 
+"    \]v
+"nmenu <silent> &Python.Select\ Function<Tab>]d 
+"    \]d
+"nmenu <silent> &Python.Select\ Class<Tab>]c 
+"    \]c
+"nmenu &Python.-Sep6- :
+"nmenu <silent> &Python.Previous\ Line\ wrt\ indent<Tab>]<up> 
+"    \]<up>
+"nmenu <silent> &Python.Next\ Line\ wrt\ indent<Tab>]<down> 
+"    \]<down>
 
 :com! PBoB execute "normal ".PythonBoB(line('.'), -1, 1)."G"
 :com! PEoB execute "normal ".PythonBoB(line('.'), 1, 1)."G"
