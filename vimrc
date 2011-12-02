@@ -238,6 +238,11 @@ cnoremap <C-B> <S-Left>
 inoremap <silent> <C-A> <C-O>^
 inoremap <silent> <C-E> <C-O>$
 
+" Select a whole word.
+" Note that, by default, C-W is used to move between windows;
+" however, we've already remapped this to the more convenient 't'.
+nnoremap <C-W> viw
+
 " Useful for both programming and LaTeX writing...
 nnoremap <silent> <C-K> :!make<CR>
 
