@@ -158,9 +158,11 @@ function! s:CreateMotionMappings()
 	for l:motion in ['w', 'b', 'e']
 	    let l:targetMapping = '<Plug>CamelCaseMotion_' . l:motion
 	    execute l:mode . 'noremap ' . l:targetMapping . ' :<C-U>call camelcasemotion#Motion(''' . l:motion . ''',v:count1,''' . l:mode . ''')<CR>'
-	    if ! hasmapto(l:targetMapping, l:mode)
-		execute (l:mode ==# 'v' ? 'x' : l:mode) . 'map <silent> ,' . l:motion . ' ' . l:targetMapping 
-	    endif
+	    " Disabled by JB, 2011-11-24:
+	    " I don't want the ',e', ',b', ',w' mappings.
+	    "if ! hasmapto(l:targetMapping, l:mode)
+		"execute (l:mode ==# 'v' ? 'x' : l:mode) . 'map <silent> ,' . l:motion . ' ' . l:targetMapping 
+	    "endif
 	endfor
     endfor
 endfunction
@@ -188,9 +190,11 @@ function! s:CreateInnerMotionMappings()
 	for l:motion in ['w', 'b', 'e']
 	    let l:targetMapping = '<Plug>CamelCaseMotion_i' . l:motion
 	    execute l:mode . 'noremap ' . l:targetMapping . ' :<C-U>call camelcasemotion#InnerMotion(''' . l:motion . ''',v:count1)<CR>'
-	    if ! hasmapto(l:targetMapping, l:mode)
-		execute (l:mode ==# 'v' ? 'x' : l:mode) . 'map <silent> i,' . l:motion . ' ' . l:targetMapping 
-	    endif
+	    " Disabled by JB, 2011-11-24:
+	    " I don't want the 'i,e', 'i,b', 'i,w' mappings.
+	    "if ! hasmapto(l:targetMapping, l:mode)
+		"execute (l:mode ==# 'v' ? 'x' : l:mode) . 'map <silent> i,' . l:motion . ' ' . l:targetMapping 
+	    "endif
 	endfor
     endfor
 endfunction
