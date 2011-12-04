@@ -1,0 +1,115 @@
+! Boyden Keyboard
+!
+! Author: James Boyden (jboy@jboy.id.au)
+! Version: 12-K (for Kinesis Contoured keyboards)
+! Last modified: 2005-12-03
+! WWW home: http://www.jboy.id.au/05/keyboard/
+!
+! Based upon "ANSI Dvorak keyboard" by Jeff Bigler (jcb@mit.edu)
+! found at http://www.mit.edu/~jcb/Dvorak/dvorak-keyboard.txt
+! 
+! This file should be given as an argument to xmodmap to switch
+! from a QWERTY to a Boyden keyboard layout.  The Boyden layout
+! is based upon the same design principles as the Dvorak, with
+! the intention of optimising for the following activities:
+!  - typing in English (composing an email, commenting code)
+!  - programming in C, C++ or Python
+!  - using the BASH command shell
+!  - using the VI text editor
+!
+! This keyboard layout has been designed for use with a Kinesis
+! Contoured keyboard.
+!
+! If you want to be easily able to switch the keyboard back to its
+! previous state, first run xmodmap -pke and redirect the output
+! to a file.  Then you can switch back by giving that file as an
+! argument to xmodmap.  For example, if you type:
+!
+!     xmodmap -pke > /tmp/xmodmap.default
+!
+! before switching the keyboard, you can then type:
+!
+!     xmodmap /tmp/xmodmap.default
+!
+! to reset the keyboard to its previous state.
+!
+! Note that if you pass this file again as an argument to xmodmap,
+! you will apply these translations a second time and come out
+! with gibberish!
+!
+!keysym q =
+keysym w = y Y
+keysym e = o O
+keysym r = u U
+keysym t = comma less
+keysym y = x X
+keysym u = r R
+keysym i = d D
+keysym o = c C
+keysym p = w W
+!keysym bracketleft =
+!keysym bracketright =
+!keysym backslash =
+keysym a = p P
+keysym s = i I
+keysym d = e E
+keysym f = a A
+keysym g = period greater
+keysym h = v V
+keysym j = h H
+keysym k = t T
+keysym l = s S
+keysym semicolon = n N
+!keysym quoteright =
+keysym z = k K
+keysym x = semicolon numbersign
+keysym c = j J
+keysym v = g G
+keysym b = underscore asterisk
+keysym n = z Z
+keysym m = l L
+keysym comma = b B
+keysym period = f F
+keysym slash = m M
+!
+! The keysyms for the top row have been moved to the end
+! of the file (and translations that would normally have
+! no effect are still included) because of conflicts with
+! some of the extended keysyms on HP workstations.  If the
+! keysyms for the 8 and 9 keys are not defined explicitly
+! *after* the keysyms for bracketleft and bracketright,
+! they end up getting bound to "slash question" and "equal
+! plus", respectively.
+!
+!keysym grave =
+keysym 1 = 1 asciicircum
+keysym 2 = 2 at
+keysym 3 = 3 parenleft
+keysym 4 = 4 parenright
+keysym 5 = 5 minus
+keysym 6 = 0 colon
+keysym 7 = 9 equal
+keysym 8 = 8 exclam
+keysym 9 = 7 plus
+keysym 0 = 6 dollar
+keysym minus = slash question
+keysym equal = percent ampersand
+!
+! All the following was rendered unnecessary by keyboard remapping...
+! !
+! ! Replace Caps_Lock with Control_L, among other things...
+! !
+! remove Lock = Caps_Lock
+! remove Control = Control_L
+! remove Control = Control_R
+! keysym Tab = asterisk plus
+! keysym Caps_Lock = Control_L
+! keysym Control_L = Escape
+! keysym Control_R = Tab
+! !keysym Super_L = Tab
+! !keysym Super_R = Tab
+! !keysym space = space
+! keysym Escape = Caps_Lock
+! add Control = Control_L
+! add Control = Control_R
+! add Lock = Caps_Lock
