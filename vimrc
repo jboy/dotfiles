@@ -139,7 +139,7 @@ au BufEnter mutt-* nmap K 77\|Bhr<Enter>
 " For Tex and BibTex files...
 " Dont break long lines.
 "au BufEnter *.tex set tw=0
-au BufEnter *.bib set tw=0
+au BufEnter *.bib set tw=0 paste
 " Display tab characters as 2 spaces.
 au BufEnter *.tex set ai tw=0 ts=2 sw=2
 
