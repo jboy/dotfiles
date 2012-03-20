@@ -6,7 +6,20 @@ source ~/.vim/ftplugin/programming_common_jb.vim
 " But now (for the Google code Style Guide) we want to insert
 " 2 space characters whenever the tab key is pressed.
 "  http://code.google.com/p/soc/wiki/PythonStyleGuide#Indentation
-set ai expandtab tw=0 ts=2 sw=2
+"set ai expandtab tw=0 ts=2 sw=2
+" OK, now for HQ, we'll go back to the Python PEP-8 standard of 4 spaces.
+set ai et tw=0 ts=4 sw=4
+
+" See http://vimdoc.sourceforge.net/htmldoc/options.html for more info:
+" - ai (autoindent): same indentation as previous line
+" - et (expandtab): replace Tab presses with spaces
+" - tw=0 (textwidth): don't break lines at a certain length
+" - ts=4 (tabstop): how many spaces tabs get expanded to (I think)
+" - sw=4 (shiftwidth): number of spaces to autoindent (I think)
+" 
+" http://vimdoc.sourceforge.net/htmldoc/options.html#'tabstop'
+" http://vimdoc.sourceforge.net/htmldoc/options.html#'shiftwidth'
+
 
 " Some mappings for convenient navigation.
 noremap [a vi(
