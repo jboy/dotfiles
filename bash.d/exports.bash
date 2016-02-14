@@ -25,6 +25,10 @@ if [ -d "${HOME}/scr-sh" ]
 then
 	PATH="${HOME}/scr-sh:${PATH}"
 fi
+if [ -d "${HOME}/.nimble/bin" ]
+then
+	PATH="${HOME}/.nimble/bin:${PATH}"
+fi
 export PATH
 
 # Path to search for python modules (in addition to default python-paths).
