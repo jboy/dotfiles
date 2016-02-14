@@ -165,3 +165,8 @@ nnoremap <silent> T :TagbarToggle<CR>
 " Useful for both programming and LaTeX writing...
 nnoremap <silent> <C-K> :!make<CR>
 
+" Set the "syntax highlighting" (colour scheme) so comments are displayed
+" in "dark cyan" rather than the usual dark blue.
+"  http://andrewradev.com/2011/08/06/making-vim-pretty-with-custom-colors/
+"  http://vimdoc.sourceforge.net/htmldoc/syntax.html#highlight-ctermbg
+:hi Comment ctermfg=DarkCyan
