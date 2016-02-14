@@ -64,10 +64,12 @@ PS1='\n# \[\033[34m\]M-f = forward-word; M-b = backward-word; M-d = kill-word\[\
 \n#\
 \n# [ \d, \t ]\n# !\! \$ '
 
-# If this is an Xterm, set the title to user@host:dir.
+# If this is an Xterm, set the title to "user@host:dir".
+# Update: Actually, set it to "host: working-directory (date)".
 case "$TERM" in
 xterm*|rxvt*)
-	PS1="\[\e]0;\u@\h: \w (\d)\a\]${PS1}"
+	#PS1="\[\e]0;\u@\h: \w (\d)\a\]${PS1}"
+	PS1="\[\e]0;\h: \w (\d)\a\]${PS1}"
 	;;
 *)
 	;;
