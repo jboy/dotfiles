@@ -19,6 +19,11 @@
 
 " Switch off syntax highlighting, if so desired.
 ":syntax off
+"
+" I use Vim in terminals with dark backgrounds, so tell Vim about this
+" (so it uses a light-coloured colour for comments, rather than dark blue).
+" From this Stack Overflow answer: http://stackoverflow.com/a/6100153
+:set background=dark
 
 " Switch off search pattern highlighting.
 :set nohlsearch
@@ -48,8 +53,10 @@
 
 " For 'plain-text' files (".txt")...
 " Set textwidth (":help textwidth") to 79 characters; lines will be broken
-" after this width.
-au BufEnter *.txt set tw=79
+" after this width.  Also, turn on automatic spell-checking.
+au BufEnter *.txt set tw=79 spell
+set spelllang=en
+set spellfile=$HOME/.vim/spell/en.utf-8.add
 " Unless I don't *want* to break lines...
 au BufEnter *.nobr set tw=0
 
@@ -61,12 +68,19 @@ au BufEnter *.nobr set tw=0
 "  ts : open ("split") a new window (equivalent to ':sp')
 "  tv : open ("vsplit") a new window vertically (equivalent to ':vs')
 "  tn : open a new, unnamed window (equivalent to ':new')
+"
 "  tw : move down/right to the next window in order (in a cycle)
 "  tt : move to the top-left window
 "  tp : move to the "previous" (most-recent) window
 "  th : move to the next window left
+"  tk : move to the next window up
 "  tj : move to the next window down
-"  etc.)
+"
+"  tK : move the current window up to the top
+"  tJ : move the current window up to the bottom
+"  tr : cycle ("rotate") all windows down by one
+"  tR : cycle ("reverse-rotate") all windows up by one
+" etc.)
 " http://vimdoc.sourceforge.net/htmldoc/windows.html
 "
 " Note that this clobbers the previous meaning of 't', namely:
@@ -119,8 +133,8 @@ au BufEnter *.c,*.cc,*.cpp,*.h,*.hh,*.hpp nnoremap J :.+1s/^<Tab>*\\( \\*\\\|\\/
 
 " For 'emails' (".email")...
 " Set textwidth (":help textwidth") to 70 characters; lines will be broken
-" after this width.
-au BufEnter *.email set tw=70
+" after this width.  Also, turn on automatic spell-checking.
+au BufEnter *.email set tw=70 spell
 " In Normal (Command) Mode, enable the following mappings:
 " K to "break long line before edge of screen".
 au BufEnter *.email nmap K 73\|Bhr<Enter>
@@ -158,13 +172,22 @@ au InsertLeave *.wiktex :set isk-=-
 au BufEnter *.wiktex inoremap <c-c> <c-c>:set isk-=-<cr>
 
 " For HTML source files (".html")...
-" Display tab characters as 2 spaces.
-au BufEnter *.html set ai tw=0 ts=2 sw=2
+"" Display tab characters as 2 spaces.
+"au BufEnter *.html set ai tw=0 ts=2 sw=2
+" Expand tab characters to 2 spaces.
+au BufEnter *.html set ai et tw=0 ts=2 sw=2
 au BufEnter *.html nmap K 99\|Bhr<Enter>
 
 " For CSS files (".css")...
 " Display tab characters as 4 spaces.
 au BufEnter *.css set ai tw=0 ts=4 sw=4
+
+" For my own Nested XPath Filters format...
+au BufEnter *.nxf set ai syntax=python
+
+" For Nim source files (".nim")...
+" Expand tab characters to 2 spaces as per Nim style guide.
+au BufEnter *.nim set ai et tw=0 ts=2 sw=2 "syntax=python
 
 " Tab completion.
 " '''
