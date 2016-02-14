@@ -45,7 +45,8 @@ for dir in ~/.bash.d
 do
 	for f in aliases builtins misccmds prompts exports
 	do
-		test -e $dir/$f.bash && source $dir/$f.bash
+		test -e ${dir}/${f}.bash && source ${dir}/${f}.bash
+		test -e ${dir}/${f}.bash.private && source ${dir}/${f}.bash.private
 	done
 done
 
