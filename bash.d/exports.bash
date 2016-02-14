@@ -13,25 +13,24 @@
 #echo ~/.bash/exports.bash
 
 # Paths to search for executables (in addition to default paths).
-if [ -d "$HOME/bin" ]
+if [ -d "${HOME}/bin" ]
 then
-	PATH="$HOME/bin:$PATH"
+	PATH="${HOME}/bin:${PATH}"
 fi
-
-if [ -d "$HOME/scr-py" ]
+if [ -d "${HOME}/scr-py" ]
 then
-	PATH="$HOME/scr-py:$PATH"
+	PATH="${HOME}/scr-py:${PATH}"
 fi
-
-if [ -d "$HOME/scr-sh" ]
+if [ -d "${HOME}/scr-sh" ]
 then
-	PATH="$HOME/scr-sh:$PATH"
+	PATH="${HOME}/scr-sh:${PATH}"
 fi
+export PATH
 
 # Path to search for python modules (in addition to default python-paths).
-if [ -d "$HOME/lib-py" ]
+if [ -d "${HOME}/lib-py" ]
 then
-	export PYTHONPATH="$HOME/lib-py"
+	export PYTHONPATH="${HOME}/lib-py"
 fi
 
 # Default editor.
