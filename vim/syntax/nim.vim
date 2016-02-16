@@ -31,34 +31,52 @@ syn region nimBrackets       contained extend keepend matchgroup=Bold start=+\(\
 
 syn keyword nimKeyword       addr and as asm atomic
 syn keyword nimKeyword       bind block break
-syn keyword nimKeyword       case cast const continue converter
+syn keyword nimKeyword       case cast continue converter
+syn keyword nimStaticKeyword       const
 syn keyword nimKeyword       discard distinct div do
 syn keyword nimKeyword       elif else end enum except export
-syn keyword nimKeyword       finally for from
+syn keyword nimKeyword       finally from
+syn keyword nimIdentDefKeyword       for
 syn keyword nimKeyword       generic
-syn keyword nimKeyword       if import in include interface is isnot iterator
-syn keyword nimKeyword       lambda let
+syn keyword nimKeyword       if in interface is isnot
+syn keyword nimIdentDefKeyword       import include iterator
+syn keyword nimKeyword       lambda
+syn keyword nimIdentDefKeyword       let
 syn keyword nimKeyword       mixin using mod
-syn keyword nimKeyword       nil not notin
+syn keyword nimKeyword       not notin
 syn keyword nimKeyword       object of or out
-syn keyword nimKeyword       proc method macro template nextgroup=nimFunction skipwhite
+syn keyword nimIdentDefKeyword       proc method macro template nextgroup=nimFunction skipwhite
 syn keyword nimKeyword       ptr
 syn keyword nimKeyword       raise ref return
-syn keyword nimKeyword       shared shl shr static
-syn keyword nimKeyword       try tuple type
-syn keyword nimKeyword       var
-syn keyword nimKeyword       when while with without
+syn keyword nimKeyword       shared shl shr
+syn keyword nimStaticKeyword  static
+syn keyword nimKeyword       try tuple
+syn keyword nimIdentDefKeyword       type nextgroup=nimTypename skipwhite
+syn keyword nimIdentDefKeyword       var
+syn keyword nimKeyword       with without
 syn keyword nimKeyword       xor
 syn keyword nimKeyword       yield
 
 syn match   nimFunction      "[a-zA-Z_][a-zA-Z0-9_]*" contained
 syn match   nimClass         "[a-zA-Z_][a-zA-Z0-9_]*" contained
-syn keyword nimRepeat        for while
+syn match   nimTypename      "[a-zA-Z_][a-zA-Z0-9_]*" contained
+syn keyword nimRepeat        while
 syn keyword nimConditional   if elif else case of
+syn keyword nimStaticConditional   when
 syn keyword nimOperator      and in is not or xor shl shr div
 syn match   nimComment       "#.*$" contains=nimTodo,@Spell
 syn keyword nimTodo          TODO FIXME XXX contained
 syn keyword nimBoolean       true false
+syn keyword nimNil           nil
+
+" Added by JB:
+syn match   nimDotOperator   "\>[.]\<"
+syn match   nimDerefOperator   "\m[[][]]\([.]\<\)\?"
+syn match   nimDerefOperator   "[[][]]"
+syn match   nimRangeOperator   "[.][.]\s*[<]"
+syn match   nimColonOperator   "\m[:]\(\s*\<\|\_$\)"
+syn match   nimSemicolonOperator   "\m[;]\(\s*\<\|\_$\)"
+
 
 
 " Strings
@@ -91,28 +109,28 @@ if nim_highlight_builtins == 1
   syn keyword nimBuiltin BiggestInt BiggestFloat cchar cschar cshort cint csize cuchar cushort
   syn keyword nimBuiltin clong clonglong cfloat cdouble clongdouble cuint culong culonglong cchar
   syn keyword nimBuiltin cstringArray TEndian PFloat32 PFloat64 PInt64 PInt32
-  syn keyword nimBuiltin TGC_Strategy TFile TFileMode TFileHandle isMainModule
-  syn keyword nimBuiltin CompileDate CompileTime nimVersion nimMajor
-  syn keyword nimBuiltin nimMinor nimPatch cpuEndian hostOS hostCPU inf
-  syn keyword nimBuiltin neginf nan QuitSuccess QuitFailure dbgLineHook stdin
-  syn keyword nimBuiltin stdout stderr defined new high low sizeof succ pred
-  syn keyword nimBuiltin inc dec newSeq len incl excl card ord chr ze ze64
-  syn keyword nimBuiltin toU8 toU16 toU32 abs min max add repr
-  syn match   nimBuiltin "\<contains\>"
-  syn keyword nimBuiltin toFloat toBiggestFloat toInt toBiggestInt addQuitProc
-  syn keyword nimBuiltin copy setLen newString zeroMem copyMem moveMem
-  syn keyword nimBuiltin equalMem alloc alloc0 realloc dealloc setLen assert
-  syn keyword nimBuiltin swap getRefcount getCurrentException Msg
-  syn keyword nimBuiltin getOccupiedMem getFreeMem getTotalMem isNil seqToPtr
-  syn keyword nimBuiltin find pop GC_disable GC_enable GC_fullCollect
-  syn keyword nimBuiltin GC_setStrategy GC_enableMarkAnd Sweep
-  syn keyword nimBuiltin GC_disableMarkAnd Sweep GC_getStatistics GC_ref
-  syn keyword nimBuiltin GC_ref GC_ref GC_unref GC_unref GC_unref quit
-  syn keyword nimBuiltin OpenFile OpenFile CloseFile EndOfFile readChar
-  syn keyword nimBuiltin FlushFile readFile write readLine writeln writeln
-  syn keyword nimBuiltin getFileSize ReadBytes ReadChars readBuffer writeBytes
-  syn keyword nimBuiltin writeChars writeBuffer setFilePos getFilePos
-  syn keyword nimBuiltin fileHandle countdown countup items lines
+"  syn keyword nimBuiltin TGC_Strategy TFile TFileMode TFileHandle isMainModule
+"  syn keyword nimBuiltin CompileDate CompileTime nimVersion nimMajor
+"  syn keyword nimBuiltin nimMinor nimPatch cpuEndian hostOS hostCPU inf
+"  syn keyword nimBuiltin neginf nan QuitSuccess QuitFailure dbgLineHook stdin
+"  syn keyword nimBuiltin stdout stderr defined new high low sizeof succ pred
+"  syn keyword nimBuiltin inc dec newSeq len incl excl card ord chr ze ze64
+"  syn keyword nimBuiltin toU8 toU16 toU32 abs min max add repr
+"  syn match   nimBuiltin "\<contains\>"
+"  syn keyword nimBuiltin toFloat toBiggestFloat toInt toBiggestInt addQuitProc
+"  syn keyword nimBuiltin copy setLen newString zeroMem copyMem moveMem
+"  syn keyword nimBuiltin equalMem alloc alloc0 realloc dealloc setLen assert
+"  syn keyword nimBuiltin swap getRefcount getCurrentException Msg
+"  syn keyword nimBuiltin getOccupiedMem getFreeMem getTotalMem isNil seqToPtr
+"  syn keyword nimBuiltin find pop GC_disable GC_enable GC_fullCollect
+"  syn keyword nimBuiltin GC_setStrategy GC_enableMarkAnd Sweep
+"  syn keyword nimBuiltin GC_disableMarkAnd Sweep GC_getStatistics GC_ref
+"  syn keyword nimBuiltin GC_ref GC_ref GC_unref GC_unref GC_unref quit
+"  syn keyword nimBuiltin OpenFile OpenFile CloseFile EndOfFile readChar
+"  syn keyword nimBuiltin FlushFile readFile write readLine writeln writeln
+"  syn keyword nimBuiltin getFileSize ReadBytes ReadChars readBuffer writeBytes
+"  syn keyword nimBuiltin writeChars writeBuffer setFilePos getFilePos
+"  syn keyword nimBuiltin fileHandle countdown countup items lines
 endif
 
 if nim_highlight_exceptions == 1
@@ -153,6 +171,7 @@ if version >= 508 || !exists("did_nim_syn_inits")
   HiLink nimBrackets       Operator
   HiLink nimKeyword	      Keyword
   HiLink nimFunction	    	Function
+  HiLink nimTypename	    	Typedef
   HiLink nimConditional	  Conditional
   HiLink nimRepeat		      Repeat
   HiLink nimString		      String
@@ -164,13 +183,23 @@ if version >= 508 || !exists("did_nim_syn_inits")
   HiLink nimComment		    Comment
   HiLink nimTodo		        Todo
   HiLink nimDecorator	    Define
-  
+  " Added by JB:
+  HiLink nimDotOperator		    	    DotOperator
+  HiLink nimDerefOperator	    	    DotOperator
+  HiLink nimRangeOperator		    Operator
+  HiLink nimColonOperator		    IdentDefOperator
+  HiLink nimSemicolonOperator		    Delimiter
+  HiLink nimIdentDefKeyword  		    IdentDefKeyword
+  HiLink nimStaticKeyword		    StaticKeyword
+  HiLink nimStaticConditional  		    StaticKeyword
+  HiLink nimNil  		    Boolean
+
   if nim_highlight_numbers == 1
     HiLink nimNumber	Number
   endif
   
   if nim_highlight_builtins == 1
-    HiLink nimBuiltin	Number
+    HiLink nimBuiltin	Type
   endif
   
   if nim_highlight_exceptions == 1
@@ -183,6 +212,23 @@ if version >= 508 || !exists("did_nim_syn_inits")
 
   delcommand HiLink
 endif
+
+" Added by JB:
+hi Function term=none ctermfg=Blue gui=none
+hi Typedef term=none ctermfg=Blue gui=none
+hi Keyword term=none ctermfg=Grey gui=none
+hi Conditional term=none ctermfg=Grey gui=none
+hi Repeat term=none ctermfg=Grey gui=none
+hi Operator term=none ctermfg=Grey gui=none
+hi DotOperator term=bold ctermfg=Cyan gui=bold
+hi Delimiter term=none ctermfg=Red gui=none
+hi StaticKeyword term=bold ctermfg=Yellow gui=bold
+hi IdentDefOperator term=bold ctermfg=Green gui=bold
+hi IdentDefKeyword term=bold ctermfg=Green gui=bold
+hi String term=none ctermfg=DarkYellow gui=none
+hi Number term=none ctermfg=DarkYellow gui=none
+hi Boolean term=none ctermfg=DarkYellow gui=none
+hi Type term=none ctermfg=Grey gui=none
 
 let b:current_syntax = "nim"
 
