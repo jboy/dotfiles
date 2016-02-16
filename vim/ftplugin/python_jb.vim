@@ -25,7 +25,7 @@ set ai et tw=0 ts=4 sw=4
 noremap [a vi(
 noremap [i vi[
 noremap ( ?[[({]<CR>
-noremap ) /[[({]<CR>
+noremap ) /[])}]<CR>
 noremap ; ?[,.;:]<CR>
 noremap , /[,.;:]<CR>
 "noremap = <Esc>/=[^=]<CR>wv$
