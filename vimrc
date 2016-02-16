@@ -187,7 +187,25 @@ au BufEnter *.nxf set ai syntax=python
 
 " For Nim source files (".nim")...
 " Expand tab characters to 2 spaces as per Nim style guide.
-au BufEnter *.nim set ai et tw=0 ts=2 sw=2 "syntax=python
+" Update #1: Python syntax highlighting sucks for single quotes like "123'u8".
+" So, let's switch off Python syntax highlighting.
+" Update #2: I'm disabling this line entirely, since I've copied "nim.vim"
+" into the "vim" directory from https://github.com/zah/nim.vim
+"au BufEnter *.nim set ai et tw=0 ts=2 sw=2 "syntax=python
+
+" Following more installation instructions at
+"  https://github.com/zah/nim.vim#final-step
+"
+" fun! JumpToDef()
+"   if exists("*GotoDefinition_" . &filetype)
+"     call GotoDefinition_{&filetype}()
+"   else
+"     exe "norm! \<C-]>"
+"   endif
+" endf
+" " Jump to tag
+" nn <M-g> :call JumpToDef()<cr>
+" ino <M-g> <esc>:call JumpToDef()<cr>i
 
 " Tab completion.
 " '''
@@ -269,12 +287,4 @@ nnoremap <C-W> viw
 
 " Useful for both programming and LaTeX writing...
 nnoremap <silent> <C-K> :!make<CR>
-
-" Only source this if we're editing a LaTeX file; it drops its mappings
-" into the main namespace, which is pretty irritating for other file-types.
-"
-" Update, 2011-10-24:  OK, it's pissing me off a bit... it seems to trigger
-" LaTeX-compiles (and complaints about errors that interrupt my train of
-" thought) at arbitrary/unexpected moments.  Disabling it now...
-"autocmd Filetype tex source ~/.vim/source_explicitly/auctex.vim
 
