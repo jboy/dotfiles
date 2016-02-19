@@ -8,6 +8,12 @@ let b:did_indent = 1
 setlocal nolisp         " Make sure lisp indenting doesn't supersede us
 setlocal autoindent     " indentexpr isn't much help otherwise
 
+" http://vimdoc.sourceforge.net/htmldoc/options.html#'tabstop'
+setlocal sw=2  " shiftwidth=2 means use 2 spaces for (auto)indent
+setlocal ts=2  " tabstop=2 means a <Tab> equates to 2 spaces.
+setlocal tw=0  " textwidth=0 means don't break long lines.
+setlocal et    " expandtab means insert spaces rather than tabs.
+
 setlocal indentexpr=GetNimIndent(v:lnum)
 setlocal indentkeys=!^F,o,O,<:>,0),0],0},=elif
 
