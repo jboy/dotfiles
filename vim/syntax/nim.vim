@@ -80,7 +80,7 @@ syn match   nimSemicolonOperator   "\m[;]\(\s*\<\|\_$\)"
 
 
 " Strings
-syn region nimString start=+'+ skip=+\\\\\|\\'\|\\$+ excludenl end=+'+ end=+$+ keepend contains=nimEscape,nimEscapeError,@Spell
+syn region nimString start=+[^0-9._]\zs'+ skip=+\\\\\|\\'\|\\$+ excludenl end=+'+ end=+$+ keepend contains=nimEscape,nimEscapeError,@Spell
 syn region nimString start=+"+ skip=+\\\\\|\\"\|\\$+ excludenl end=+"+ end=+$+ keepend contains=nimEscape,nimEscapeError,@Spell
 syn region nimString start=+"""+ end=+"""+ keepend contains=nimEscape,nimEscapeError,@Spell
 syn region nimRawString matchgroup=Normal start=+[rR]"+ end=+"+ skip=+\\\\\|\\"+ contains=@Spell
@@ -95,10 +95,10 @@ syn match nimEscapeError "\\x\x\=\X" display contained
 
 if nim_highlight_numbers == 1
   " numbers (including longs and complex)
-  syn match   nimNumber	"\v<0x\x+(\'(i|I|f|F|u|U)(8|16|32|64))?>"
-  syn match   nimNumber	"\v<[0-9_]+(\'(i|I|f|F|u|U)(8|16|32|64))?>"
+  syn match   nimNumber	"\v<0x\x+('[iIfFuU](8|16|32|64))?>"
+  syn match   nimNumber	"\v<[0-9_]+('[iIfFuU](8|16|32|64))?>"
   syn match   nimNumber	"\v[0-9]\.[0-9_]+([eE][+-]=[0-9_]+)=>"
-  syn match   nimNumber	"\v<[0-9_]+(\.[0-9_]+)?([eE][+-]?[0-9_]+)?(\'(f|F)(32|64))?>"
+  syn match   nimNumber	"\v<[0-9_]+\.([0-9_]+)?([eE][+-]?[0-9_]+)?('(f|F)(32|64))?>"
 endif
 
 if nim_highlight_builtins == 1
