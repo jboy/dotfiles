@@ -172,15 +172,18 @@ au InsertLeave *.wiktex :set isk-=-
 au BufEnter *.wiktex inoremap <c-c> <c-c>:set isk-=-<cr>
 
 " For HTML source files (".html")...
-"" Display tab characters as 2 spaces.
+"" Display tab characters as 4 spaces.
 "au BufEnter *.html set ai tw=0 ts=2 sw=2
-" Expand tab characters to 2 spaces.
-au BufEnter *.html set ai et tw=0 ts=2 sw=2
+" Expand tab characters to 4 spaces.
+"au BufEnter *.html set ai et tw=0 ts=2 sw=2
+au BufEnter *.html set ai et tw=0 ts=4 sw=4
 au BufEnter *.html nmap K 99\|Bhr<Enter>
 
 " For CSS files (".css")...
-" Display tab characters as 4 spaces.
-au BufEnter *.css set ai tw=0 ts=4 sw=4
+" Display tab characters as 2 spaces.
+"au BufEnter *.css set ai tw=0 ts=4 sw=4
+au BufEnter *.css set ai et tw=0 ts=2 sw=2  " For Dad's website
+"au BufEnter *.css set ai tw=0 ts=2 sw=2  " For Object AI website
 
 " For my own Nested XPath Filters format...
 au BufEnter *.nxf set ai syntax=python
