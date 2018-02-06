@@ -3,22 +3,25 @@
 # For info about the contents of this file, read the Bash Reference Manual.
 # (Search for "Readline Initialization")
 
-# Rebind C-f to search forward for the next occurrence of that character
-# (replacing "forward-char", which moves forward by a character).
+# Rebind C-f to search forward for the next occurrence of that character.
+# (replacing "forward-char", which moves forward by a single character)
 Control-f: character-search
 
-# Rebind C-b to search back to the previous occurrence of that character
-# (replacing "backward-char", which moves backward by a character).
+# Rebind C-b to search back to the previous occurrence of that character.
+# (replacing "backward-char", which moves backward by a single character)
 Control-b: character-search-backward
 
-# Bind C-y to list the command history in reverse.
-# (replacing "yank the top of the kill ring into the buffer at point").
+# Bind C-y to list the command historY in reverse.
+# (replacing "yank", which pastes the top of the kill ring into the buffer)
 C-y: "history | tac | less\n"
 
-# Bind C-t to pushd
+# Bind C-t to Bash built-in "pushd".
 # (replacing "transpose-chars").
 C-t: "pushd "
 
-# Bind C-k to whatever I want...?
-#C-k: 
+# Bind C-k to "kill-word", which kills from current position to end-of-word,
+# since the default binding for "kill-word" is M-d, but AwesomeWM often uses
+# Alt/Meta for its keyboard bindings, so I want to avoid clashed.
+# (replacing "kill-line", which kills from current position to end-of-line)
+C-k: kill-word
 
