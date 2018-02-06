@@ -13,17 +13,17 @@
 #echo ~/.bash/exports.bash
 
 # Paths to search for executables (in addition to default paths).
-if [ -d "${HOME}/bin" ]
+if [ -d "${HOME}/sys/bin" ]
 then
-	PATH="${HOME}/bin:${PATH}"
+	PATH="${HOME}/sys/bin:${PATH}"
 fi
-if [ -d "${HOME}/scr-py" ]
+if [ -d "${HOME}/sys/scr-py" ]
 then
-	PATH="${HOME}/scr-py:${PATH}"
+	PATH="${HOME}/sys/scr-py:${PATH}"
 fi
-if [ -d "${HOME}/scr-sh" ]
+if [ -d "${HOME}/sys/scr-sh" ]
 then
-	PATH="${HOME}/scr-sh:${PATH}"
+	PATH="${HOME}/sys/scr-sh:${PATH}"
 fi
 if [ -d "${HOME}/.nimble/bin" ]
 then
@@ -32,9 +32,9 @@ fi
 export PATH
 
 # Path to search for python modules (in addition to default python-paths).
-if [ -d "${HOME}/lib-py" ]
+if [ -d "${HOME}/sys/lib-py" ]
 then
-	export PYTHONPATH="${HOME}/lib-py"
+	export PYTHONPATH="${HOME}/sys/lib-py"
 fi
 
 # Default editor.

@@ -52,12 +52,12 @@
 # http://www.ibm.com/developerworks/linux/library/l-tip-prompt/
 # https://wiki.archlinux.org/index.php/Color_Bash_Prompt
 
-PS1='\n# \[\033[34m\]M-f = forward-word; M-b = backward-word; M-d = kill-word\[\033[0m\]\
-\n# \[\033[34m\]C-r = reverse-search-history; C-s = forward-search-history\[\033[0m\]\
-\n# \[\033[34m\]C-x C-e = edit-and-execute-command; C-o = operate-and-get-next\[\033[0m\]\
-\n# \[\033[34m\]fc [-l] = Fix Command: edit-and-execute prev command / List last 10\[\033[0m\]\
+PS1='\n# \[\033[34m\]C-r = reverse-search-history; C-x C-e = edit-and-execute-command\[\033[0m\]\
+\n# \[\033[34m\]fc [-l] = fix command: edit-and-execute prev command / List last 10\[\033[0m\]\
 \n# \[\033[34m\]Rebound:\
- C-y = "history"; C-t = "pushd "; C-b = character-search-backward\[\033[0m\]\
+ C-y = historY in reverse; C-t = "pushd "; C-k = kill-word\[\033[0m\]\
+\n# \[\033[34m\]        \
+ C-b = character-search-backward; C-f = character-search\[\033[0m\]\
 \n#\
 \n# \[\033[1m\]\u\[\033[0m\]@\[\033[1m\]\h\[\033[0m\]/\l '"(${SHLVL})"' \
  \[\033[31m\]\w\[\033[0m\]\
