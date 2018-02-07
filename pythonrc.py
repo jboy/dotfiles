@@ -31,11 +31,14 @@ if _sys.argv[0] == "":
     import rlcompleter
 
     # This is a module in my PYTHONPATH.
-    import custom_readline_bindings as _custom_readline_bindings
+    try:
+        import custom_readline_bindings as _custom_readline_bindings
 
-    for _binding in _custom_readline_bindings.get_bindings().items():
-        _readline.parse_and_bind("%s: %s" % _binding)
+        for _binding in _custom_readline_bindings.get_bindings().items():
+            _readline.parse_and_bind("%s: %s" % _binding)
 
-    print('Enabled key mappings:', file=_sys.stderr)
-    for _binding in _custom_readline_bindings.get_readable_bindings():
-        print('  % 8s  ->  %s' % _binding, file=_sys.stderr)
+        print('Enabled key mappings:', file=_sys.stderr)
+        for _binding in _custom_readline_bindings.get_readable_bindings():
+            print('  % 8s  ->  %s' % _binding, file=_sys.stderr)
+    except ImportError:
+        print('Module not found: custom_readline_bindings', file=_sys.stderr)
